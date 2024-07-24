@@ -1,10 +1,13 @@
 import streamlit as st
 import pandas as pd
 import requests
+from combine_simMat import get_simMat
 
 movies = pd.read_pickle('movies.pkl')
-SIM_MAT1 = "sim_mat_tfIdf.pkl" #vectorization technique used: TF IDF (TfidfVectorizer())
-SIM_MAT2 = "sim_mat_bow.pkl" #vectorization technique used: Bag of Words (CountVectorizer())
+#SIM_MAT1 = "sim_mat_tfIdf.pkl" #vectorization technique used: TF IDF (TfidfVectorizer())
+#SIM_MAT2 = "sim_mat_bow.pkl" #vectorization technique used: Bag of Words (CountVectorizer())
+SIM_MAT = get_simMat()
+
 
 movie_options = [
     f"{row['title']} ({row['year']})" for _,row in movies.iterrows()
@@ -17,7 +20,7 @@ def fetch_poster(movie_id):
 
 def recommend(movie_name):
     movie_index = movies[movies['title'] == movie_name].index[0]
-    distances = pd.read_pickle(SIM_MAT1)[movie_index]
+    distances = SIM_MAT[movie_index]
     rec_movies_list = sorted(list(enumerate(distances)), reverse=True, key=lambda x: x[1])[1:6] #top 5 recommendation
 
     recommended_movies, rec_movie_posters = [], []
