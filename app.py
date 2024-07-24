@@ -3,25 +3,18 @@ import pandas as pd
 import requests
 
 def get_simMat():
-    import pickle
     
-    file_prefix = 'sim_mat_tfIdf_part_'
-    merged_data = bytearray()
+    df = pd.read_pickle('movies.pkl')
+    from sklearn.feature_extraction.text import TfidfVectorizer
+    tfIdf = TfidfVectorizer(max_features = 5000, stop_words='english')
+    vectors = tfIdf.fit_transform(df['tags']).toarray()
 
-    for x in range(4):
-        part_file = f"{file_prefix}{x:02}"
-        
-        with open(part_file, "rb") as file:
-            merged_data.extend(file.read())
-    
-    matrix = pickle.loads(merged_data)
-    return matrix
+    from sklearn.metrics.pairwise import cosine_similarity
+    return cosine_similarity(vectors)
 
 movies = pd.read_pickle('movies.pkl')
 #SIM_MAT1 = "sim_mat_tfIdf.pkl" #vectorization technique used: TF IDF (TfidfVectorizer())
 #SIM_MAT2 = "sim_mat_bow.pkl" #vectorization technique used: Bag of Words (CountVectorizer())
-SIM_MAT = get_simMat()
-
 
 movie_options = [
     f"{row['title']} ({row['year']})" for _,row in movies.iterrows()
@@ -33,7 +26,9 @@ def fetch_poster(movie_id):
     return "https://image.tmdb.org/t/p/w500" + data['poster_path']
 
 def recommend(movie_name):
+    SIM_MAT = get_simMat()
     movie_index = movies[movies['title'] == movie_name].index[0]
+    
     distances = SIM_MAT[movie_index]
     rec_movies_list = sorted(list(enumerate(distances)), reverse=True, key=lambda x: x[1])[1:6] #top 5 recommendation
 
