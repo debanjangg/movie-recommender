@@ -1,7 +1,21 @@
 import streamlit as st
 import pandas as pd
 import requests
-from combine_simMat import get_simMat
+
+def get_simMat():
+    import pickle
+    
+    file_prefix = 'sim_mat_tfIdf_part_'
+    merged_data = bytearray()
+
+    for x in range(4):
+        part_file = f"{file_prefix}{x:02}"
+        
+        with open(part_file, "rb") as file:
+            merged_data.extend(file.read())
+    
+    matrix = pickle.loads(merged_data)
+    return matrix
 
 movies = pd.read_pickle('movies.pkl')
 #SIM_MAT1 = "sim_mat_tfIdf.pkl" #vectorization technique used: TF IDF (TfidfVectorizer())
