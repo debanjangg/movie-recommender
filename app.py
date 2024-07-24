@@ -5,6 +5,7 @@ import requests
 def get_simMat():
     
     df = pd.read_pickle('movies.pkl')
+    
     from sklearn.feature_extraction.text import TfidfVectorizer
     tfIdf = TfidfVectorizer(max_features = 5000, stop_words='english')
     vectors = tfIdf.fit_transform(df['tags']).toarray()
