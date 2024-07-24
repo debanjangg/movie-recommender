@@ -1,6 +1,5 @@
 .ipynb_checkpoints/
 myenv/
 Movie_Recommender_System.docx
-movies.pkl
 sim_mat_bow.pkl
 sim_mat_tfIdf.pkl
