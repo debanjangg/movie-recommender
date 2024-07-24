@@ -2,10 +2,7 @@ import streamlit as st
 import pandas as pd
 import requests
 
-def get_simMat():
-    
-    df = pd.read_pickle('movies.pkl')
-    
+def get_simMat(df):
     from sklearn.feature_extraction.text import TfidfVectorizer
     tfIdf = TfidfVectorizer(max_features = 5000, stop_words='english')
     vectors = tfIdf.fit_transform(df['tags']).toarray()
@@ -14,6 +11,7 @@ def get_simMat():
     return cosine_similarity(vectors)
 
 movies = pd.read_pickle('movies.pkl')
+SIM_MAT = get_simMat(movies)
 #SIM_MAT1 = "sim_mat_tfIdf.pkl" #vectorization technique used: TF IDF (TfidfVectorizer())
 #SIM_MAT2 = "sim_mat_bow.pkl" #vectorization technique used: Bag of Words (CountVectorizer())
 
@@ -27,7 +25,6 @@ def fetch_poster(movie_id):
     return "https://image.tmdb.org/t/p/w500" + data['poster_path']
 
 def recommend(movie_name):
-    SIM_MAT = get_simMat()
     movie_index = movies[movies['title'] == movie_name].index[0]
     
     distances = SIM_MAT[movie_index]
