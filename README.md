@@ -1,6 +1,8 @@
 ﻿# Movie-recommender
 A simple Python webapp built using Streamlit to recommend 5 similar movies based on the user's input, using Cosine Similarity among movies.
 
+## Check it out: https://movie-recommender-x64.streamlit.app/
+
 # How to run?
 Download/Clone the repo, open the directory in your terminal and run the following commands:
 
