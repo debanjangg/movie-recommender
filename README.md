@@ -6,7 +6,7 @@ A simple Python webapp built using Streamlit to recommend 5 similar movies based
 # How to run?
 Download/Clone the repo, open the directory in your terminal and run the following commands:
 
-`pip install requirements.txt`
+`pip install -r requirements.txt`
 
 `streamlit run app.py`
 
